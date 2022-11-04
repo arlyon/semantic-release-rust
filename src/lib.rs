@@ -21,7 +21,10 @@ use std::{
 };
 
 use guppy::{
-    graph::{DependencyDirection, PackageGraph, PackageLink, PackageMetadata, PackageSource},
+    graph::{
+        DependencyDirection, PackageGraph, PackageLink, PackageMetadata, PackagePublish,
+        PackageSource,
+    },
     MetadataCommand, PackageId,
 };
 use itertools::Itertools;
@@ -172,7 +175,7 @@ pub fn prepare(
     info!("Setting version information for packages in the workspace.");
     for package in graph.workspace().iter() {
         let path = package.manifest_path();
-        debug!("reading {}", path.display());
+        debug!("reading {:?}", path);
         let mut cargo = read_cargo_toml(path)?;
 
         debug!("Setting the version for {}", package.name());
@@ -205,7 +208,7 @@ pub fn prepare(
             }
         }
 
-        debug!("writing {}", path.display());
+        debug!("writing {:?}", path);
         write_cargo_toml(path, cargo)?;
     }
 
@@ -343,15 +346,11 @@ fn link_is_publishable(link: &PackageLink) -> bool {
 /// A package is publishable if either publication is unrestricted or the one
 /// and only registry it is allowed to be published to is "crates.io".
 fn package_is_publishable(pkg: &PackageMetadata) -> bool {
-    let result = pkg.publish().map_or(true, |registries| {
-        registries.len() == 1 && registries[0] == "cratis.io"
-    });
-
-    if result {
-        trace!("package {} is publishable", pkg.name());
+    if let PackagePublish::Registries(s) = pkg.publish() {
+        s == ["crates.io"]
+    } else {
+        true
     }
-
-    result
 }
 
 fn process_publishable_packages<F>(graph: &PackageGraph, mut f: F) -> Result<()>
@@ -551,13 +550,11 @@ fn set_dependencies_version(
         let targets = table.iter().map(|(key, _)| key.to_owned()).collect_vec();
 
         for target in targets {
-            if let Some(target_deps) = table
-                .entry(&target)
-                .as_table_mut()
-                .and_then(|inner| inner[typ.key()].as_table_mut())
-            {
-                set_dependency_version(target_deps, version, name)
-                    .ok_or_else(|| CargoTomlError::set_version(name, version))?;
+            if let Item::Table(table) = table.entry(&target) {
+                if let Item::Table(target_deps) = table.entry(typ.key()) {
+                    set_dependency_version(target_deps, version, name)
+                        .ok_or_else(|| CargoTomlError::set_version(name, version))?;
+                }
             }
         }
     };

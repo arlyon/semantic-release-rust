@@ -108,7 +108,7 @@ pub enum Error {
         inner: io::Error,
 
         /// The manifest path for the crate on which the error occured.
-        manifest_path: PathBuf,
+        manifest_path: camino::Utf8PathBuf,
     },
 
     /// Error that records a non-sucess exit status from `cargo publish`.
@@ -118,7 +118,7 @@ pub enum Error {
         status: ExitStatus,
 
         /// The manifest path for the crate on which the error occured.
-        manifest_path: PathBuf,
+        manifest_path: camino::Utf8PathBuf,
     },
 
     /// Error while parsing a url for the release record.
@@ -244,14 +244,17 @@ impl Error {
         })
     }
 
-    pub(crate) fn cargo_publish(inner: io::Error, manifest_path: &Path) -> Error {
+    pub(crate) fn cargo_publish(inner: io::Error, manifest_path: &camino::Utf8Path) -> Error {
         Error::CargoPublish {
             inner,
             manifest_path: manifest_path.to_owned(),
         }
     }
 
-    pub(crate) fn cargo_publish_status(status: ExitStatus, manifest_path: &Path) -> Error {
+    pub(crate) fn cargo_publish_status(
+        status: ExitStatus,
+        manifest_path: &camino::Utf8Path,
+    ) -> Error {
         Error::CargoPublishStatus {
             status,
             manifest_path: manifest_path.to_owned(),

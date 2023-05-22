@@ -158,12 +158,12 @@ checksum = "581f5dba903aac52ea3feb5ec4810848460ee833876f1f9b0fdeab1f19091574"
 
 [[package]]
 name = "cfg-expr"
-version = "0.11.0"
+version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b0357a6402b295ca3a86bc148e84df46c02e41f41fef186bda662557ef6328aa"
+checksum = "c8790cf1286da485c72cf5fc7aeba308438800036ec67d89425924c4807268c9"
 dependencies = [
  "smallvec",
- "target-lexicon 0.12.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "target-lexicon",
 ]
 
 [[package]]
@@ -334,7 +334,7 @@ checksum = "22030e2c5a68ec659fde1e949a745124b48e6fa8b045b7ed5bd1fe4ccc5c4e5d"
 [[package]]
 name = "guppy"
 version = "0.14.2"
-source = "git+https://github.com/arlyon/cargo-guppy.git#84b0d28f3ef3f39323577c395a2a23bd53030826"
+source = "git+https://github.com/arlyon/cargo-guppy.git#446142e912694f9915fd53b0530de52e03c3b3f9"
 dependencies = [
  "camino",
  "cargo_metadata",
@@ -359,7 +359,7 @@ dependencies = [
 [[package]]
 name = "guppy-workspace-hack"
 version = "0.1.0"
-source = "git+https://github.com/arlyon/cargo-guppy.git#84b0d28f3ef3f39323577c395a2a23bd53030826"
+source = "git+https://github.com/arlyon/cargo-guppy.git#446142e912694f9915fd53b0530de52e03c3b3f9"
 dependencies = [
  "bstr",
  "clap",
@@ -878,23 +878,18 @@ dependencies = [
 
 [[package]]
 name = "target-lexicon"
-version = "0.12.4"
+version = "0.12.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c02424087780c9b71cc96799eaeddff35af2bc513278cda5c99fc1f5d026d3c1"
-
-[[package]]
-name = "target-lexicon"
-version = "0.12.4"
-source = "git+https://github.com/arlyon/target-lexicon.git#1d3ca699395f1980828ad19ba72bd792998ee3d9"
+checksum = "fd1ba337640d60c3e96bc6f0638a939b9c9a7f2c316a1598c279828b3d1dc8c5"
 
 [[package]]
 name = "target-spec"
 version = "1.1.0"
-source = "git+https://github.com/arlyon/cargo-guppy.git#84b0d28f3ef3f39323577c395a2a23bd53030826"
+source = "git+https://github.com/arlyon/cargo-guppy.git#446142e912694f9915fd53b0530de52e03c3b3f9"
 dependencies = [
  "cfg-expr",
  "guppy-workspace-hack",
- "target-lexicon 0.12.4 (git+https://github.com/arlyon/target-lexicon.git)",
+ "target-lexicon",
 ]
 
 [[package]]
